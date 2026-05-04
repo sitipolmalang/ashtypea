@@ -37,6 +37,13 @@ defmodule AshtypeaWeb.Router do
       # on_mount {AshtypeaWeb.LiveUserAuth, :live_no_user}
     end
 
+
+    live "/posts", PostLive.Index, :index
+    live "/posts/new", PostLive.Form, :new
+    live "/posts/:id/edit", PostLive.Form, :edit
+    live "/posts/:id", PostLive.Show, :show
+    live "/posts/:id/show/edit", PostLive.Show, :edit
+
     post "/rpc/run", AshTypescriptRpcController, :run
     post "/rpc/validate", AshTypescriptRpcController, :validate
     get "/ash-typescript", PageController, :index

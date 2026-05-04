@@ -3,7 +3,10 @@ defmodule Blog.Post do
   otp_app: :ashtypea, 
   domain: Blog, 
   data_layer: AshPostgres.DataLayer,
-  extensions: [AshTypescript.Resource]
+  extensions: [
+    AshTypescript.Resource,
+    AshFormBuilder
+  ]
 
   postgres do
     table "posts"
@@ -31,5 +34,30 @@ defmodule Blog.Post do
   
   identities do
     identity :unique_title, [:title]
+  end
+
+
+  forms do
+    form :create do
+      submit_label "Create Post"
+      accent       :teal
+      transitions  :smooth
+
+      field :title do
+        label       "Post Title"
+        placeholder "Enter post title"
+        required    true
+      end
+
+      field :body do
+        label       "Post Body"
+        placeholder "Enter post body"
+      end
+    end
+
+    form :update do
+      submit_label "Update Post"
+      accent       :indigo
+    end
   end
 end

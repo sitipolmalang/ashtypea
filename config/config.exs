@@ -7,6 +7,9 @@
 # General application configuration
 import Config
 
+config :cinder, default_theme: "modern"
+config :ash_form_builder, :theme, :default
+
 config :ash_typescript,
   output_file: "assets/js/ash_rpc.ts",
   run_endpoint: "/rpc/run",

@@ -43,7 +43,7 @@ defmodule Ashtypea.MixProject do
     [
       {:bcrypt_elixir, "~> 3.0"},
       {:picosat_elixir, "~> 0.2"},
-      {:sourceror, "~> 1.8", only: [:dev, :test]},
+      {:sourceror, "~> 1.8"},
       {:ash_typescript, "~> 0.17"},
       {:ash_admin, "~> 1.0"},
       {:ash_authentication_phoenix, "~> 2.0"},
@@ -51,7 +51,7 @@ defmodule Ashtypea.MixProject do
       {:ash_postgres, "~> 2.0"},
       {:ash_phoenix, "~> 2.0"},
       {:ash, "~> 3.0"},
-      {:igniter, "~> 0.6", only: [:dev, :test]},
+      {:igniter, "~> 0.6"},
       {:phoenix, "~> 1.8.5"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.13"},
@@ -77,7 +77,9 @@ defmodule Ashtypea.MixProject do
       {:gettext, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:cinder, "~> 0.13"},
+      {:ash_form_builder, "~> 0.4.0"}
     ]
   end
 
