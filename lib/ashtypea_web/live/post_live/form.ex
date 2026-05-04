@@ -1,33 +1,33 @@
 defmodule AshtypeaWeb.PostLive.Form do
   use AshtypeaWeb, :live_view
 
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <Layouts.app flash={@flash}>
-      <.header>
-        {@page_title}
-        <:subtitle>Use this form to manage post records in your database.</:subtitle>
-      </.header>
+  # @impl true
+  # def render(assigns) do
+  #   ~H"""
+  #   <Layouts.app flash={@flash}>
+  #     <.header>
+  #       {@page_title}
+  #       <:subtitle>Use this form to manage post records in your database.</:subtitle>
+  #     </.header>
 
-      <.form
-        for={@form}
-        id="post-form"
-        phx-change="validate"
-        phx-submit="save"
-      >
-        <.input field={@form[:title]} type="text" label="Title" /><.input
-          field={@form[:body]}
-          type="text"
-          label="Body"
-        />
+  #     <.form
+  #       for={@form}
+  #       id="post-form"
+  #       phx-change="validate"
+  #       phx-submit="save"
+  #     >
+  #       <.input field={@form[:title]} type="text" label="Title" /><.input
+  #         field={@form[:body]}
+  #         type="text"
+  #         label="Body"
+  #       />
 
-        <.button phx-disable-with="Saving..." variant="primary">Save Post</.button>
-        <.button navigate={return_path(@return_to, @post)}>Cancel</.button>
-      </.form>
-    </Layouts.app>
-    """
-  end
+  #       <.button phx-disable-with="Saving..." variant="primary">Save Post</.button>
+  #       <.button navigate={return_path(@return_to, @post)}>Cancel</.button>
+  #     </.form>
+  #   </Layouts.app>
+  #   """
+  # end
 
   @impl true
   def mount(params, _session, socket) do
@@ -45,6 +45,7 @@ defmodule AshtypeaWeb.PostLive.Form do
      |> assign(:return_to, return_to(params["return_to"]))
      |> assign(post: post)
      |> assign(:page_title, page_title)
+     |> assign(:current_scope, socket.assigns[:current_scope])
      |> assign_form()}
   end
 
