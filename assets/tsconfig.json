@@ -23,7 +23,8 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    // "baseUrl": ".",
+    "moduleResolution": "bundler",
     "paths": {
       "*": ["../deps/*"]
     },
