@@ -60,43 +60,51 @@ export const PostsTable = () => {
         );
       }
 
-      return result.data;
+      return result.data as any;
     },
     initialPageParam: undefined,
     getNextPageParam: (lastPage) => {
+      if (Array.isArray(lastPage)) return undefined;
       return lastPage.hasMore ? lastPage.nextPage : undefined;
     },
   });
 
   // Flatten paginated data into a single array
   const posts = useMemo(() => {
-    return data?.pages.flatMap((page) => page.results) ?? [];
+    if (!data) return [];
+    return data.pages.flatMap((page) => (Array.isArray(page) ? page : page.results));
   }, [data]);
 
   // Column definitions
-  const columns = useMemo<ColumnDef<Post>[]>(
-    () => [
-      columnHelper.accessor("title", {
-        header: "Title",
-        cell: (info) => (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-            {info.getValue()}
-          </span>
-        ),
-        size: 120,
-      }),
-      columnHelper.accessor("body", {
-        header: "Body",
-        cell: (info) => (
-          <div className="text-sm font-medium text-gray-900 truncate">
-            {info.getValue()}
-          </div>
-        ),
-        size: 300,
-      }),
-    ],
-    [],
-  );
+  const columns = [
+  columnHelper.accessor("title", {
+    header: "Title",
+    cell: (info) => {
+      const value = info.getValue() as string;
+
+      return (
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+          {value}
+        </span>
+      );
+    },
+    size: 120,
+  }),
+
+  columnHelper.accessor("body", {
+    header: "Body",
+    cell: (info) => {
+      const value = info.getValue() as string;
+
+      return (
+        <div className="text-sm font-medium text-gray-900 truncate">
+          {value}
+        </div>
+      );
+    },
+    size: 300,
+  }),
+];
 
   // Initialize table
   const table = useReactTable({
