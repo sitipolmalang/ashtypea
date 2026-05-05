@@ -13,6 +13,10 @@ defmodule Blog.Post do
     repo Ashtypea.Repo
   end
 
+  typescript do
+    type_name "Post"
+  end
+
   actions do
     defaults [:read, :destroy, create: [:title, :body], update: [:title, :body]]
   end

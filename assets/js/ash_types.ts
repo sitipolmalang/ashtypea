@@ -3,14 +3,63 @@
 
 
 
+export type UUID = string;
+
+// Post Schema
+export type PostResourceSchema = {
+  __type: "Resource";
+  __primitiveFields: "id" | "title" | "body";
+  id: UUID;
+  title: string;
+  body: string | null;
+};
 
 
 
+export type PostAttributesOnlySchema = {
+  __type: "Resource";
+  __primitiveFields: "id" | "title" | "body";
+  id: UUID;
+  title: string;
+  body: string | null;
+};
+
+
+export type PostFilterInput = {
+  and?: Array<PostFilterInput>;
+  or?: Array<PostFilterInput>;
+  not?: Array<PostFilterInput>;
+
+  id?: {
+    eq?: UUID;
+    notEq?: UUID;
+    in?: Array<UUID>;
+  };
+
+  title?: {
+    eq?: string;
+    notEq?: string;
+    in?: Array<string>;
+  };
+
+  body?: {
+    eq?: string;
+    notEq?: string;
+    in?: Array<string>;
+    isNil?: boolean;
+  };
 
 
 
+};
 
 
+export const postFilterFields = ["id", "title", "body"] as const;
+export type PostFilterField = (typeof postFilterFields)[number];
+
+
+export const postSortFields = ["id", "title", "body"] as const;
+export type PostSortField = (typeof postSortFields)[number];
 
 
 // Utility Types
