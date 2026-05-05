@@ -274,6 +274,66 @@ export async function validateCreatePost(
 }
 
 
+export type DeletePostResult = | { success: true; data: {}; }
+| { success: false; errors: AshRpcError[]; }
+
+;
+
+/**
+ * Delete a Post
+ *
+ * @ashActionType :destroy
+ */
+export async function deletePost(
+  config: {
+  tenant?: string;
+  identity: UUID;
+  headers?: Record<string, string>;
+  fetchOptions?: RequestInit;
+  customFetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+}
+): Promise<DeletePostResult> {
+  const payload = {
+    action: "delete_post",
+    ...(config.tenant !== undefined && { tenant: config.tenant }),
+    identity: config.identity
+  };
+
+  return executeActionRpcRequest<DeletePostResult>(
+    payload,
+    config
+  );
+}
+
+
+/**
+ * Validate: Delete a Post
+ *
+ * @ashActionType :destroy
+ * @validation true
+ */
+export async function validateDeletePost(
+  config: {
+  tenant?: string;
+  identity: UUID | string;
+  headers?: Record<string, string>;
+  fetchOptions?: RequestInit;
+  customFetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+}
+): Promise<ValidationResult> {
+  const payload = {
+    action: "delete_post",
+    ...(config.tenant !== undefined && { tenant: config.tenant }),
+    identity: config.identity
+  };
+
+  return executeValidationRpcRequest<ValidationResult>(
+    payload,
+    config
+  );
+}
+
+
 export type ListPostsFields = UnifiedFieldSelection<PostResourceSchema>[];
 
 

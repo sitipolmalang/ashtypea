@@ -8,6 +8,7 @@ defmodule Blog do
       rpc_action :list_posts, :read
       rpc_action :create_post, :create
       rpc_action :update_post, :update
+      rpc_action :delete_post, :destroy
     end
   end
 
