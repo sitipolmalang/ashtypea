@@ -8,4 +8,8 @@ defmodule AshtypeaWeb.PageController do
   def index conn, _params do
     conn |> put_root_layout(html: {AshtypeaWeb.Layouts, :spa_root}) |> render(:index)
   end
+
+  def react(conn, _params) do
+    render(conn, :react)
+  end
 end

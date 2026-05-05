@@ -47,6 +47,7 @@ defmodule AshtypeaWeb.Router do
     post "/rpc/run", AshTypescriptRpcController, :run
     post "/rpc/validate", AshTypescriptRpcController, :validate
     get "/ash-typescript", PageController, :index
+    get "/react/*path", PageController, :react
   end
 
   scope "/", AshtypeaWeb do
