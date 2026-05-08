@@ -72,7 +72,7 @@ config :spark,
 config :ashtypea,
   ecto_repos: [Ashtypea.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Blog, Ashtypea.Accounts]
+  ash_domains: [Ashtypea.Blog, Ashtypea.Accounts]
 
 # Configure the endpoint
 config :ashtypea, AshtypeaWeb.Endpoint,

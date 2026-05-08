@@ -34,7 +34,7 @@ defmodule AshtypeaWeb.PostLive.Form do
     post =
       case params["id"] do
         nil -> nil
-        id -> Ash.get!(Blog.Post, id)
+        id -> Ash.get!(Ashtypea.Blog.Post, id)
       end
 
     action = if is_nil(post), do: "New", else: "Edit"
@@ -77,7 +77,7 @@ defmodule AshtypeaWeb.PostLive.Form do
       if post do
         AshPhoenix.Form.for_update(post, :update, as: "post")
       else
-        AshPhoenix.Form.for_create(Blog.Post, :create, as: "post")
+        AshPhoenix.Form.for_create(Ashtypea.Blog.Post, :create, as: "post")
       end
 
     assign(socket, form: to_form(form))

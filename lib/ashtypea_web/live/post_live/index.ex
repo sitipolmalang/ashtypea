@@ -2,7 +2,7 @@ defmodule AshtypeaWeb.PostLive.Index do
   use AshtypeaWeb, :live_view
   use Cinder.UrlSync
 
-  alias Blog.Post
+  alias Ashtypea.Blog.Post
 
   @collection_id "post-collection"
 
@@ -60,12 +60,12 @@ defmodule AshtypeaWeb.PostLive.Index do
      |> assign(:record, nil) # use this to hold the record being edited or shown
      |> assign(:form, nil) # use this to hold the form for the record being edited or created
      |> assign(:current_scope, socket.assigns[:current_scope])
-     |> stream(:posts, Ash.read!(Blog.Post))}
+     |> stream(:posts, Ashtypea.Blog.list_posts!())}
   end
 
   @impl true
-  def handle_info({:form_submitted, Post, _result}, socket) do
-    posts = Ash.read!(Post)
+  def handle_info({:form_submitted, Ashtypea.Blog.Post, _result}, socket) do
+    posts = Ashtypea.Blog.list_posts!()
 
     {:noreply,
      socket
@@ -77,8 +77,8 @@ defmodule AshtypeaWeb.PostLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    post = Ash.get!(Blog.Post, id)
-    Ash.destroy!(post)
+    post = Ashtypea.Blog.get_post!(id)
+    Ashtypea.Blog.delete_post!(post)
 
     {:noreply,
      socket

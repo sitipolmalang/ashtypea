@@ -1,7 +1,7 @@
-defmodule Blog.Post do
+defmodule Ashtypea.Blog.Post do
   use Ash.Resource, 
   otp_app: :ashtypea, 
-  domain: Blog, 
+  domain: Ashtypea.Blog, 
   data_layer: AshPostgres.DataLayer,
   extensions: [
     AshTypescript.Resource,

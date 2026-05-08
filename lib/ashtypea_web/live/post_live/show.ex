@@ -35,6 +35,6 @@ defmodule AshtypeaWeb.PostLive.Show do
     {:ok,
      socket
      |> assign(:page_title, "Show Post")
-     |> assign(:post, Ash.get!(Blog.Post, id))}
+     |> assign(:post, Ashtypea.Blog.get_post!(id))}
   end
 end
