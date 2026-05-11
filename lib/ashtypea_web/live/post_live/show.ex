@@ -1,5 +1,6 @@
 defmodule AshtypeaWeb.PostLive.Show do
   use AshtypeaWeb, :live_view
+  on_mount {AshtypeaWeb.LiveUserAuth, :live_user_required}
 
   @impl true
   def render(assigns) do

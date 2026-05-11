@@ -1,5 +1,6 @@
 defmodule AshtypeaWeb.PostLive.Index do
   use AshtypeaWeb, :live_view
+  on_mount {AshtypeaWeb.LiveUserAuth, :live_user_required}
   use Cinder.UrlSync
 
   alias Ashtypea.Blog.Post

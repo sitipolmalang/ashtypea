@@ -15,6 +15,10 @@ defmodule AshtypeaWeb.Router do
     plug :load_from_session
   end
 
+  pipeline :auth_browser do
+    plug AshtypeaWeb.Plugs.RequireAuth
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
     plug :load_from_bearer
@@ -35,18 +39,22 @@ defmodule AshtypeaWeb.Router do
       #
       # If an authenticated user must *not* be present:
       # on_mount {AshtypeaWeb.LiveUserAuth, :live_no_user}
+
+      live "/posts", PostLive.Index, :index
+      live "/posts/new", PostLive.Form, :new
+      live "/posts/:id/edit", PostLive.Form, :edit
+      live "/posts/:id", PostLive.Show, :show
+      live "/posts/:id/show/edit", PostLive.Show, :edit
     end
 
+    get "/ash-typescript", PageController, :index
+  end
 
-    live "/posts", PostLive.Index, :index
-    live "/posts/new", PostLive.Form, :new
-    live "/posts/:id/edit", PostLive.Form, :edit
-    live "/posts/:id", PostLive.Show, :show
-    live "/posts/:id/show/edit", PostLive.Show, :edit
+  scope "/", AshtypeaWeb do
+    pipe_through [:browser, :auth_browser]
 
     post "/rpc/run", AshTypescriptRpcController, :run
     post "/rpc/validate", AshTypescriptRpcController, :validate
-    get "/ash-typescript", PageController, :index
     get "/react/*path", PageController, :react
   end
 
