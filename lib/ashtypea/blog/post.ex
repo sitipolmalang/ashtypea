@@ -2,6 +2,7 @@ defmodule Ashtypea.Blog.Post do
   use Ash.Resource, 
   otp_app: :ashtypea, 
   domain: Ashtypea.Blog, 
+  authorizers: [Ash.Policy.Authorizer],
   data_layer: AshPostgres.DataLayer,
   extensions: [
     AshTypescript.Resource,
@@ -62,6 +63,12 @@ defmodule Ashtypea.Blog.Post do
     form :update do
       submit_label "Update Post"
       accent       :indigo
+    end
+  end
+
+  policies do
+    policy action_type([:read, :create, :update, :destroy]) do
+      authorize_if actor_present()
     end
   end
 end

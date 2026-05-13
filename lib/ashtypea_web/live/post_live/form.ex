@@ -2,40 +2,12 @@ defmodule AshtypeaWeb.PostLive.Form do
   use AshtypeaWeb, :live_view
   on_mount {AshtypeaWeb.LiveUserAuth, :live_user_required}
 
-  # @impl true
-  # def render(assigns) do
-  #   ~H"""
-  #   <Layouts.app flash={@flash}>
-  #     <.header>
-  #       {@page_title}
-  #       <:subtitle>Use this form to manage post records in your database.</:subtitle>
-  #     </.header>
-
-  #     <.form
-  #       for={@form}
-  #       id="post-form"
-  #       phx-change="validate"
-  #       phx-submit="save"
-  #     >
-  #       <.input field={@form[:title]} type="text" label="Title" /><.input
-  #         field={@form[:body]}
-  #         type="text"
-  #         label="Body"
-  #       />
-
-  #       <.button phx-disable-with="Saving..." variant="primary">Save Post</.button>
-  #       <.button navigate={return_path(@return_to, @post)}>Cancel</.button>
-  #     </.form>
-  #   </Layouts.app>
-  #   """
-  # end
-
   @impl true
   def mount(params, _session, socket) do
     post =
       case params["id"] do
         nil -> nil
-        id -> Ash.get!(Ashtypea.Blog.Post, id)
+        id -> Ash.get!(Ashtypea.Blog.Post, id, actor: socket.assigns.current_user)
       end
 
     action = if is_nil(post), do: "New", else: "Edit"
@@ -74,11 +46,14 @@ defmodule AshtypeaWeb.PostLive.Form do
   end
 
   defp assign_form(%{assigns: %{post: post}} = socket) do
+
+    current_user = socket.assigns[:current_user]
+
     form =
       if post do
-        AshPhoenix.Form.for_update(post, :update, as: "post")
+        AshPhoenix.Form.for_update(post, :update, as: "post",  actor: current_user)
       else
-        AshPhoenix.Form.for_create(Ashtypea.Blog.Post, :create, as: "post")
+        AshPhoenix.Form.for_create(Ashtypea.Blog.Post, :create, as: "post",  actor: current_user)
       end
 
     assign(socket, form: to_form(form))

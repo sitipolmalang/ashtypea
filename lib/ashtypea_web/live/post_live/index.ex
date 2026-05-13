@@ -3,8 +3,6 @@ defmodule AshtypeaWeb.PostLive.Index do
   on_mount {AshtypeaWeb.LiveUserAuth, :live_user_required}
   use Cinder.UrlSync
 
-  alias Ashtypea.Blog.Post
-
   @collection_id "post-collection"
 
   # @impl true
