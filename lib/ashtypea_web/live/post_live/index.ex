@@ -49,13 +49,20 @@ defmodule AshtypeaWeb.PostLive.Index do
   #   </Layouts.app>
   #   """
   # end
+  
+  defp ash_opts(socket) do
+    [
+      actor: socket.assigns.current_user,
+      # tenant: socket.assigns.current_tenant
+    ]
+  end
 
   @impl true
   def mount(_params, _session, socket) do
 
     posts =
     Ashtypea.Blog.list_posts!(
-      actor: socket.assigns.current_user
+      ash_opts(socket)
     )
     {:ok,
      socket
@@ -69,7 +76,7 @@ defmodule AshtypeaWeb.PostLive.Index do
 
   @impl true
   def handle_info({:form_submitted, Ashtypea.Blog.Post, _result}, socket) do
-    posts = Ashtypea.Blog.list_posts!(actor: socket.assigns.current_user)
+    posts = Ashtypea.Blog.list_posts!(ash_opts(socket))
 
     {:noreply,
      socket
@@ -81,8 +88,8 @@ defmodule AshtypeaWeb.PostLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    post = Ashtypea.Blog.get_post!(id, actor: socket.assigns.current_user)
-    Ashtypea.Blog.delete_post!(post, actor: socket.assigns.current_user)
+    post = Ashtypea.Blog.get_post!(id, ash_opts(socket))
+    Ashtypea.Blog.delete_post!(post, ash_opts(socket))
 
     {:noreply,
      socket

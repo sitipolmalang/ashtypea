@@ -35,6 +35,7 @@ defmodule AshtypeaWeb.PostLive.Show do
   def mount(%{"id" => id}, _session, socket) do
 
     current_user = socket.assigns[:current_user]
+    
     case Ashtypea.Blog.get_post(id, actor: current_user) do
       {:ok, post} ->
         {:ok,

@@ -1,25 +1,39 @@
 defmodule AshtypeaWeb.PostLive.Form do
   use AshtypeaWeb, :live_view
+  
   on_mount {AshtypeaWeb.LiveUserAuth, :live_user_required}
 
   @impl true
   def mount(params, _session, socket) do
-    post =
-      case params["id"] do
-        nil -> nil
-        id -> Ash.get!(Ashtypea.Blog.Post, id, actor: socket.assigns.current_user)
-      end
+    case load_post(params["id"], socket.assigns.current_user) do
+      {:ok, post} ->
+        action = if is_nil(post), do: "New", else: "Edit"
+        page_title = action <> " Post"
 
-    action = if is_nil(post), do: "New", else: "Edit"
-    page_title = action <> " " <> "Post"
+        {:ok,
+        socket
+        |> assign(:return_to, return_to(params["return_to"]))
+        |> assign(post: post)
+        |> assign(:page_title, page_title)
+        |> assign(:current_scope, socket.assigns[:current_scope])
+        |> assign_form()}
 
-    {:ok,
-     socket
-     |> assign(:return_to, return_to(params["return_to"]))
-     |> assign(post: post)
-     |> assign(:page_title, page_title)
-     |> assign(:current_scope, socket.assigns[:current_scope])
-     |> assign_form()}
+      {:error, _reason} ->
+        {:ok,
+        socket
+        |> put_flash(:error, "Post not found")
+        |> push_navigate(to: ~p"/posts")}
+    end
+  end
+
+  defp load_post(nil, _current_user), do: {:ok, nil}
+
+  defp load_post(id, current_user) do
+    Ash.get(
+      Ashtypea.Blog.Post,
+      id,
+      actor: current_user
+    )
   end
 
   defp return_to("show"), do: "show"
