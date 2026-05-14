@@ -84,8 +84,24 @@ defmodule Ashtypea.Blog.Post do
   end
 
   policies do
-    policy action_type([:read, :create, :update, :destroy]) do
+    # admin bypass semua
+    bypass actor_attribute_equals(:role, :admin) do
+      authorize_if always()
+    end
+
+    # user hanya lihat post miliknya
+    policy action_type(:read) do
+      authorize_if expr(user_id == ^actor(:id))
+    end
+
+    # create
+    policy action_type(:create) do
       authorize_if actor_present()
+    end
+
+    # update/delete hanya owner
+    policy action_type([:update, :destroy]) do
+      authorize_if expr(user_id == ^actor(:id))
     end
   end
 end

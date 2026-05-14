@@ -14,12 +14,14 @@
     actor={assigns[:current_user]}
     url_state={@url_state}
     page_size={10}
+    query_opts={[load: [:user]]}
     empty_message="No posts found."
     click={fn post -> JS.push("show_post", value: %{id: post.id}) end}
     selectable
   >
     <:col :let={post} field="title" sort label="Title" filter>{post.title}</:col>
     <:col :let={post} field="body" label="Body">{post.body}</:col>
+    <:col :let={post} field="user.email" label="Author">{post.user.email}</:col>
     
 
     <:col :let={post} label="Actions" class="w-px whitespace-nowrap">

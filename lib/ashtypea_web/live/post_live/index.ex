@@ -52,6 +52,11 @@ defmodule AshtypeaWeb.PostLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+
+    posts =
+    Ashtypea.Blog.list_posts!(
+      actor: socket.assigns.current_user
+    )
     {:ok,
      socket
      |> assign(:page_title, "Listing Posts")
@@ -59,12 +64,12 @@ defmodule AshtypeaWeb.PostLive.Index do
      |> assign(:record, nil) # use this to hold the record being edited or shown
      |> assign(:form, nil) # use this to hold the form for the record being edited or created
      |> assign(:current_scope, socket.assigns[:current_scope])
-     |> stream(:posts, Ashtypea.Blog.list_posts!())}
+     |> stream(:posts, posts)}
   end
 
   @impl true
   def handle_info({:form_submitted, Ashtypea.Blog.Post, _result}, socket) do
-    posts = Ashtypea.Blog.list_posts!()
+    posts = Ashtypea.Blog.list_posts!(actor: socket.assigns.current_user)
 
     {:noreply,
      socket
@@ -76,8 +81,8 @@ defmodule AshtypeaWeb.PostLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    post = Ashtypea.Blog.get_post!(id)
-    Ashtypea.Blog.delete_post!(post)
+    post = Ashtypea.Blog.get_post!(id, actor: socket.assigns.current_user)
+    Ashtypea.Blog.delete_post!(post, actor: socket.assigns.current_user)
 
     {:noreply,
      socket
