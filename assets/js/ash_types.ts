@@ -8,20 +8,22 @@ export type UUID = string;
 // Post Schema
 export type PostResourceSchema = {
   __type: "Resource";
-  __primitiveFields: "id" | "title" | "body";
+  __primitiveFields: "id" | "title" | "body" | "userId";
   id: UUID;
   title: string;
   body: string | null;
+  userId: UUID;
 };
 
 
 
 export type PostAttributesOnlySchema = {
   __type: "Resource";
-  __primitiveFields: "id" | "title" | "body";
+  __primitiveFields: "id" | "title" | "body" | "userId";
   id: UUID;
   title: string;
   body: string | null;
+  userId: UUID;
 };
 
 
@@ -49,16 +51,22 @@ export type PostFilterInput = {
     isNil?: boolean;
   };
 
+  userId?: {
+    eq?: UUID;
+    notEq?: UUID;
+    in?: Array<UUID>;
+  };
+
 
 
 };
 
 
-export const postFilterFields = ["id", "title", "body"] as const;
+export const postFilterFields = ["id", "title", "body", "userId", "user"] as const;
 export type PostFilterField = (typeof postFilterFields)[number];
 
 
-export const postSortFields = ["id", "title", "body"] as const;
+export const postSortFields = ["id", "title", "body", "userId"] as const;
 export type PostSortField = (typeof postSortFields)[number];
 
 

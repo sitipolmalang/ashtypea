@@ -19,7 +19,17 @@ defmodule Ashtypea.Blog.Post do
   end
 
   actions do
-    defaults [:read, :destroy, create: [:title, :body], update: [:title, :body]]
+    defaults [:read, :destroy]
+
+    create :create do
+      accept [:title, :body]
+
+      change relate_actor(:user)
+    end
+
+    update :update do
+      accept [:title, :body]
+    end
   end
 
   attributes do
@@ -33,6 +43,7 @@ defmodule Ashtypea.Blog.Post do
     attribute :body, :string do
       public? true
     end
+    
 
     timestamps()
   end
@@ -41,6 +52,12 @@ defmodule Ashtypea.Blog.Post do
     identity :unique_title, [:title]
   end
 
+  relationships do
+    belongs_to :user, Ashtypea.Accounts.User do
+      allow_nil? false
+      public? true
+    end
+  end
 
   forms do
     form :create do

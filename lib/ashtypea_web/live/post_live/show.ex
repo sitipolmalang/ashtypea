@@ -36,15 +36,16 @@ defmodule AshtypeaWeb.PostLive.Show do
 
     current_user = socket.assigns[:current_user]
     case Ashtypea.Blog.get_post(id, actor: current_user) do
-    {:ok, post} ->
-      {:ok,
-       socket
-       |> assign(:page_title, "Show Post")
-       |> assign(:post, post)}
+      {:ok, post} ->
+        {:ok,
+        socket
+        |> assign(:page_title, "Show Post")
+        |> assign(:post, post)}
 
-    {:error, _reason} ->
-      {:ok, socket
-      |> put_flash(:error, "Post not found")
-      |> push_navigate(to: ~p"/posts")}    
+      {:error, _reason} ->
+        {:ok, socket
+        |> put_flash(:error, "Post not found")
+        |> push_navigate(to: ~p"/posts")}
+      end 
   end
 end
